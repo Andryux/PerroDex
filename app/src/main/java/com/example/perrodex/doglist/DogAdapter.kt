@@ -1,10 +1,11 @@
-package com.example.perrodex
+package com.example.perrodex.doglist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.perrodex.Dog
 import com.example.perrodex.databinding.DogListItemBinding
 
 class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
