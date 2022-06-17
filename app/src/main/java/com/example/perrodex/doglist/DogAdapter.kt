@@ -2,6 +2,7 @@ package com.example.perrodex.doglist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,13 @@ class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
         }
     }
 
+    //Click en la lista de perros, cada item
+    private var onItemClickListener: ((Dog) -> Unit)? = null
+    fun setOnItemClickListener(onItemClickListener: (Dog) -> Unit) {
+        this.onItemClickListener = onItemClickListener
+    }
+
+
     //Creamos viewHolder, para cada perro se crea 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
         val binding = DogListItemBinding.inflate(LayoutInflater.from(parent.context))
@@ -36,6 +44,9 @@ class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
     inner class DogViewHolder(private val binding: DogListItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(dog: Dog){
             binding.dogName.text = dog.name
+            binding.dogName.setOnClickListener{
+                onItemClickListener?.invoke(dog)
+            }
         }
     }
 }
