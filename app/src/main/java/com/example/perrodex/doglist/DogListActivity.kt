@@ -3,8 +3,11 @@ package com.example.perrodex.doglist
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.perrodex.api.ApiResponseStatus
 import com.example.perrodex.databinding.ActivityDogListBinding//
 import com.example.perrodex.dogdetail.DogDetailActivity
 import com.example.perrodex.dogdetail.DogDetailActivity.Companion.DOG_KEY
@@ -19,6 +22,8 @@ class DogListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityDogListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val loadingWheel = binding.loadingWheel
 
         val recycler = binding.dogRecycler
         recycler.layoutManager = LinearLayoutManager(this)
@@ -35,12 +40,23 @@ class DogListActivity : AppCompatActivity() {
         recycler.adapter = adapter
 
 
-
         //Para leer un LiveData, debemos crear un observer desde esta activity que nos devolvera el valor que tiene dogList en ese momento
-        dogListViewModel.dogList.observe(this){
+        dogListViewModel.dogList.observe(this) {
             //Actualizamos la lista en el adapter, solo observamos ya que no podemos editar el viewModel
-            dogList ->
+                dogList ->
             adapter.submitList(dogList)
+        }
+
+        dogListViewModel.status.observe(this) { status ->
+
+            when (status) {
+                is ApiResponseStatus.Error -> {
+                    loadingWheel.visibility = View.GONE
+                    Toast.makeText(this, status.messageId, Toast.LENGTH_SHORT).show()
+                }
+                is ApiResponseStatus.Loading -> loadingWheel.visibility = View.VISIBLE
+                is ApiResponseStatus.Success -> loadingWheel.visibility = View.GONE
+            }
         }
     }
 }
