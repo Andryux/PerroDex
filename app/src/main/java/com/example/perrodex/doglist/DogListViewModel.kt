@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.perrodex.Dog
+import com.example.perrodex.model.Dog
 import com.example.perrodex.api.ApiResponseStatus
 import kotlinx.coroutines.launch
 

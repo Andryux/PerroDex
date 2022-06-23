@@ -1,6 +1,6 @@
 package com.example.perrodex.api.dto
 
-import com.example.perrodex.Dog
+import com.example.perrodex.model.Dog
 
 class DogDTOMapper {
 
