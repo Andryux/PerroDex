@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import coil.load
-import com.example.perrodex.Dog
-import com.example.perrodex.GET_ALL_DOGS_URL
+import com.example.perrodex.model.Dog
 import com.example.perrodex.R
 import com.example.perrodex.databinding.ActivityDogDetailBinding
 

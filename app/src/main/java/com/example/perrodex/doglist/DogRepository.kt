@@ -1,14 +1,10 @@
 package com.example.perrodex.doglist
 
-import com.example.perrodex.Dog
-import com.example.perrodex.R
+import com.example.perrodex.model.Dog
 import com.example.perrodex.api.ApiResponseStatus
 import com.example.perrodex.api.DogApi.retrofitService
 import com.example.perrodex.api.dto.DogDTOMapper
 import com.example.perrodex.api.makeNetworkCall
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.net.UnknownHostException
 
 class DogRepository {
 

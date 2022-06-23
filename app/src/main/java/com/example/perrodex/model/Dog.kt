@@ -1,4 +1,4 @@
-package com.example.perrodex
+package com.example.perrodex.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
