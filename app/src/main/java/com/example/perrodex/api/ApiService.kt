@@ -1,11 +1,10 @@
 package com.example.perrodex.api
 
-import com.example.perrodex.BASE_URL
-import com.example.perrodex.GET_ALL_DOGS_URL
-import com.example.perrodex.SIGN_UP_URL
+import com.example.perrodex.*
+import com.example.perrodex.api.dto.LogInDTO
 import com.example.perrodex.api.dto.SignUpDTO
 import com.example.perrodex.api.responses.DogListApiResponse
-import com.example.perrodex.api.responses.SignUpApiResponse
+import com.example.perrodex.api.responses.AuthApiResponse
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
@@ -21,8 +20,11 @@ interface ApiService{
     @GET(GET_ALL_DOGS_URL)
     suspend fun getAllDogs(): DogListApiResponse
 
+    @POST(LOG_IN_URL)
+    suspend fun logIn(@Body logInDTO: LogInDTO): AuthApiResponse
+
     @POST(SIGN_UP_URL)
-    suspend fun signUp(@Body signUpDTO: SignUpDTO): SignUpApiResponse
+    suspend fun signUp(@Body signUpDTO: SignUpDTO): AuthApiResponse
 }
 
 object DogApi {

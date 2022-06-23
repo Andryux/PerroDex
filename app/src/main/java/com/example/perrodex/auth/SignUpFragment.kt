@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.perrodex.R
 import com.example.perrodex.databinding.FragmentSignUpBinding
+import com.example.perrodex.isValidEmail
 
 class SignUpFragment : Fragment() {
 
@@ -74,9 +75,5 @@ class SignUpFragment : Fragment() {
 
         //Sign Up!!
         signUpFragmentActions.onSignUpFieldsValidated(email, password, passwordConfirmation)
-    }
-
-    private fun isValidEmail(email: String?): Boolean {
-        return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
