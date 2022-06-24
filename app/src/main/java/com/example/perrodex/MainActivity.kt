@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.perrodex.auth.LoginActivity
 import com.example.perrodex.databinding.ActivityMainBinding
+import com.example.perrodex.doglist.DogListActivity
 import com.example.perrodex.model.User
 import com.example.perrodex.settings.SettingsActivity
 
@@ -23,6 +24,14 @@ class MainActivity : AppCompatActivity() {
         binding.settingsFab.setOnClickListener {
             openSettingsActivity()
         }
+
+        binding.dogListFab.setOnClickListener {
+            openDogListActivity()
+        }
+    }
+
+    private fun openDogListActivity() {
+        startActivity(Intent(this, DogListActivity::class.java))
     }
 
     private fun openSettingsActivity() {
