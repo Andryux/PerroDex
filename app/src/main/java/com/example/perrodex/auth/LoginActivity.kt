@@ -12,6 +12,7 @@ import com.example.perrodex.MainActivity
 import com.example.perrodex.R
 import com.example.perrodex.api.ApiResponseStatus
 import com.example.perrodex.databinding.ActivityLoginBinding
+import com.example.perrodex.model.User
 
 class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
     SignUpFragment.SignUpFragmentActions {
@@ -36,6 +37,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
             viewModel.user.observe(this){
                 user ->
                 if(user!=null){
+                    User.setLoggedInUser(this, user)
                     startMainActivity()
                 }
             }
@@ -44,6 +46,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
 
     private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun showErrorDialog(messageId: Int){
