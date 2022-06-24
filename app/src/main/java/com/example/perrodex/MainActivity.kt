@@ -3,6 +3,7 @@ package com.example.perrodex
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.perrodex.api.ApiServiceInterceptor
 import com.example.perrodex.auth.LoginActivity
 import com.example.perrodex.databinding.ActivityMainBinding
 import com.example.perrodex.doglist.DogListActivity
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         if(user == null){
             openLoginActivity()
             return
+        } else {
+            ApiServiceInterceptor.setSessionToken(user.authenticationToken)
         }
 
         binding.settingsFab.setOnClickListener {
