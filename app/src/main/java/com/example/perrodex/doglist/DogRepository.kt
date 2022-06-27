@@ -55,7 +55,8 @@ class DogRepository {
                     lifeExpectancy = "",
                     temperament = "",
                     weightFemale = "",
-                    weightMale = ""
+                    weightMale = "",
+                    inCollection = false
                 )
             }
         }.sorted()
