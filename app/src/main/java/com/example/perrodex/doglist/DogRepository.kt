@@ -3,6 +3,7 @@ package com.example.perrodex.doglist
 import com.example.perrodex.model.Dog
 import com.example.perrodex.api.ApiResponseStatus
 import com.example.perrodex.api.DogApi.retrofitService
+import com.example.perrodex.api.dto.AddDogToUserDTO
 import com.example.perrodex.api.dto.DogDTOMapper
 import com.example.perrodex.api.makeNetworkCall
 
@@ -16,5 +17,14 @@ class DogRepository {
         val dogDTOList = dogListApiResponse.data.dogs
         val dogDTOMapper = DogDTOMapper()
         dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+    }
+
+    suspend fun addDogToUser(dogIg: String): ApiResponseStatus<Any> = makeNetworkCall {
+        val addDogToUserDTO = AddDogToUserDTO(dogIg)
+        val defaultResponse = retrofitService.addDogToUser(addDogToUserDTO)
+
+        if (!defaultResponse.isSuccess){
+            throw Exception(defaultResponse.message)
+        }
     }
 }
