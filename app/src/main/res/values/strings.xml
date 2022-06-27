@@ -28,4 +28,5 @@
     <string name="there_was_an_error">There was an error</string>
     <string name="wrong_user_or_password">Wrong user or password</string>
     <string name="logout">LOGOUT</string>
+    <string name="error_adding_dog">There was error adding dog to collection</string>
 </resources>
