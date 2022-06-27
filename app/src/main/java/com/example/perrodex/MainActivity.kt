@@ -9,6 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.perrodex.api.ApiServiceInterceptor
 import com.example.perrodex.auth.LoginActivity
@@ -18,6 +21,8 @@ import com.example.perrodex.model.User
 import com.example.perrodex.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     // Register the permissions callback, which handles the user's response to the
     // system permissions dialog. Save the return value, an instance of
@@ -29,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         ) { isGranted: Boolean ->
             if (isGranted) {
                 //Open camera
+                startCamera()
             } else {
                 Toast.makeText(this, "You need to accept camera permission to use camera", Toast.LENGTH_SHORT).show()
             }
@@ -36,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val user = User.getLoggedInUser(this)
@@ -65,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
+                startCamera()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
             -> {
@@ -93,6 +100,25 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun startCamera(){
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            //Used to bind the lifecycle of cameras to the lifecycle owner
+            val cameraProvider = cameraProviderFuture.get()
+            //Preview
+            val preview = Preview.Builder().build()
+            preview.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
+
+            //Select back camera as a default
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            //Bind use cases to camera
+            cameraProvider.bindToLifecycle(
+                this, cameraSelector, preview
+            )
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun openDogListActivity() {
