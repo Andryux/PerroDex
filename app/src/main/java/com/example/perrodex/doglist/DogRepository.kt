@@ -54,8 +54,8 @@ class DogRepository {
                     weightMale = ""
                 )
             }
-        }
-    
+        }.sorted()
+
 
     //Suspend ya que esta dentro de una corrutina, los recupera y los devuelve al viewModel - MutableLiveData
     private suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> = makeNetworkCall {
