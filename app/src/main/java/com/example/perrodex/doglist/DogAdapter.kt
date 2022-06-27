@@ -27,6 +27,12 @@ class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
         this.onItemClickListener = onItemClickListener
     }
 
+    //Al realizar una pulsacion larga se añade el perro a nuestra coleccion
+    private var onLongItemClickListener: ((Dog) -> Unit)? = null
+    fun setLongOnItemClickListener(onLongItemClickListener: (Dog) -> Unit) {
+        this.onLongItemClickListener = onLongItemClickListener
+    }
+
 
     //Creamos viewHolder, para cada perro se crea 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
@@ -45,6 +51,10 @@ class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
         fun bind(dog: Dog){
             binding.dogListItemLayout.setOnClickListener{
                 onItemClickListener?.invoke(dog)
+            }
+            binding.dogListItemLayout.setOnLongClickListener{
+                onLongItemClickListener?.invoke(dog)
+                true
             }
             binding.dogImage.load(dog.imageUrl)
         }
