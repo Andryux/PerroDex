@@ -1,15 +1,18 @@
 package com.example.perrodex.doglist
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.perrodex.R
 import com.example.perrodex.model.Dog
 import com.example.perrodex.databinding.DogListItemBinding
 
-class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
+class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
     //De que manera tiene que responder cuando se edita un elemento
     companion object DiffCallback : DiffUtil.ItemCallback<Dog>() {
         override fun areItemsTheSame(oldItem: Dog, newItem: Dog): Boolean {
@@ -47,16 +50,37 @@ class DogAdapter: ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback){
     }
 
     //Setteamos los valores en el view, podemos hacerlo aqui o directamente en el xml del layout
-    inner class DogViewHolder(private val binding: DogListItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(dog: Dog){
-            binding.dogListItemLayout.setOnClickListener{
-                onItemClickListener?.invoke(dog)
+    inner class DogViewHolder(private val binding: DogListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(dog: Dog) {
+            if (dog.inCollection) {
+
+                binding.dogListItemLayout.background = ContextCompat.getDrawable(
+                    binding.dogImage.context,
+                    R.drawable.dog_list_item_null_background
+                )
+                binding.dogImage.visibility = View.VISIBLE
+                binding.dogIndex.visibility = View.GONE
+
+                binding.dogListItemLayout.setOnClickListener {
+                    onItemClickListener?.invoke(dog)
+                }
+                binding.dogImage.load(dog.imageUrl)
+
+            } else {
+                binding.dogImage.visibility = View.GONE
+                binding.dogIndex.visibility = View.VISIBLE
+                binding.dogIndex.text = dog.index.toString()
+
+                binding.dogListItemLayout.background = ContextCompat.getDrawable(
+                    binding.dogImage.context,
+                    R.drawable.dog_list_item_null_background
+                )
+                binding.dogListItemLayout.setOnLongClickListener {
+                    onLongItemClickListener?.invoke(dog)
+                    true
+                }
             }
-            binding.dogListItemLayout.setOnLongClickListener{
-                onLongItemClickListener?.invoke(dog)
-                true
-            }
-            binding.dogImage.load(dog.imageUrl)
         }
     }
 }
