@@ -8,7 +8,7 @@ import com.example.perrodex.model.Dog
 import com.example.perrodex.api.ApiResponseStatus
 import kotlinx.coroutines.launch
 
-class DogListViewModel: ViewModel() {
+class DogListViewModel : ViewModel() {
 
     //Encapsulamiento, queremos que solo se pueda editar desde este ViewModel (MutableLiveData) pero no desde fuera de la clase(LiveData)
     //Por lo que creamos una copia
@@ -16,7 +16,7 @@ class DogListViewModel: ViewModel() {
     private val _dogList = MutableLiveData<List<Dog>>()
     val dogList: LiveData<List<Dog>>
         get() = _dogList
-    
+
     private val _status = MutableLiveData<ApiResponseStatus<Any>>()
     val status: LiveData<ApiResponseStatus<Any>>
         get() = _status
@@ -25,13 +25,20 @@ class DogListViewModel: ViewModel() {
     private val dogRepository = DogRepository()
 
     init {
-        downloadDogs()
+        downloadUserDogs()
     }
 
-    fun addDogToUser(dogId: String){
+    fun addDogToUser(dogId: String) {
         viewModelScope.launch {
             _status.value = ApiResponseStatus.Loading()
             dogRepository.addDogToUser(dogId)
+        }
+    }
+
+    private fun downloadUserDogs() {
+        viewModelScope.launch {
+            _status.value = ApiResponseStatus.Loading()
+            handleResponseStatus(dogRepository.getUserDogs())
         }
     }
 
@@ -46,15 +53,15 @@ class DogListViewModel: ViewModel() {
 
     @Suppress("UNCHECKED_CAST")
     private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
-        if (apiResponseStatus is ApiResponseStatus.Success){
+        if (apiResponseStatus is ApiResponseStatus.Success) {
             _dogList.value = apiResponseStatus.data!!
         }
 
         _status.value = apiResponseStatus as ApiResponseStatus<Any>
     }
 
-    private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>){
-        if (apiResponseStatus is ApiResponseStatus.Success){
+    private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>) {
+        if (apiResponseStatus is ApiResponseStatus.Success) {
             downloadDogs()
         }
 

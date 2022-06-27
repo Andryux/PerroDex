@@ -26,6 +26,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface ApiService {
+    //Devuelve todos los perros
     @GET(GET_ALL_DOGS_URL)
     suspend fun getAllDogs(): DogListApiResponse
 
@@ -38,6 +39,11 @@ interface ApiService {
     @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
     @POST(ADD_DOG_TO_USER_URL)
     suspend fun addDogToUser(@Body addDogToUserDTO: AddDogToUserDTO): DefaultResponse
+
+    //Devuelve unicamente la lista de perros de la coleccion del usuario
+    @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
+    @POST(GET_USER_DOGS_URL)
+    suspend fun getUserDogs(): DogListApiResponse
 }
 
 object DogApi {
