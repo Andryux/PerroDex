@@ -9,14 +9,18 @@ import com.example.perrodex.api.dto.DogDTOMapper
 import com.example.perrodex.api.makeNetworkCall
 import com.example.perrodex.api.responses.DogListApiResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class DogRepository {
 
     suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
         return withContext(Dispatchers.IO) {
-            val allDogsListResponse = downloadDogs()
-            val userDogsListResponse = getUserDogs()
+            val allDogsListResponseDeferred = async { downloadDogs() }
+            val userDogsListResponseDeferred = async { getUserDogs() }
+
+            val allDogsListResponse = allDogsListResponseDeferred.await()
+            val userDogsListResponse = userDogsListResponseDeferred.await()
 
             if (allDogsListResponse is ApiResponseStatus.Error) {
                 allDogsListResponse
